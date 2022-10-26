@@ -147,7 +147,7 @@ class SequenceImportSettings(bpy.types.PropertyGroup):
         name="Relative Paths",
         description="Store relative paths for Streaming sequences and for reloading Cached sequences",
         default=True)
-    flipNormals: BoolProperty(
+    flipNormals: bpy.props.BoolProperty(
         name="Flip Normals",
         description="Flips normals of imported mesh",
         default=False,
@@ -169,8 +169,8 @@ class ImportSequence(bpy.types.Operator, ImportHelper):
 
     directory: bpy.props.StringProperty(subtype='DIR_PATH')
 
-    axis_forward: bpy.props.StringProperty(default="-Z")
-    axis_up: bpy.props.StringProperty(default="Y")
+    axis_forward: bpy.props.StringProperty(default="Y")
+    axis_up: bpy.props.StringProperty(default="Z")
 
     def execute(self, context):
         if self.sequenceSettings.fileNamePrefix == "":
@@ -243,8 +243,8 @@ class ImportSequence(bpy.types.Operator, ImportHelper):
     def resetToDefaults(self):
         self.sequenceSettings.fileNamePrefix = ""
         self.filepath = ""
-        self.axis_forward = "-Z"
-        self.axis_up = "Y"
+        self.axis_forward = "Y"
+        self.axis_up = "Z"
 
     # we need this function so it doesn't try to render any UI elements. The ImportSequencePanel will do all the drawing
     def draw(self, context):
@@ -333,6 +333,7 @@ class SMO_PT_SequenceImportSettingsPanel(bpy.types.Panel):
         col.prop(op.sequenceSettings, "cacheMode")
         col.prop(op.sequenceSettings, "perFrameMaterial")
         col.prop(op.sequenceSettings, "dirPathIsRelative")
+        col.prop(op.sequenceSettings, "flipNormals")
 
 
 def menu_func_import_sequence(self, context):

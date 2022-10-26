@@ -303,6 +303,11 @@ class MeshSequenceSettings(bpy.types.PropertyGroup):
         description="Store relative paths for Streaming sequences and for reloading Cached sequences",
         default=False)
 
+    flipNormals: bpy.props.BoolProperty(
+        name="Flip Normals",
+        description="Flips normals of imported mesh",
+        default=False)
+
     dirPathNeedsRelativizing: bpy.props.BoolProperty(
         name="DirPath Needs Relativizing",
         description="Whether dirPath still needs to be converted into a relative path",
@@ -499,11 +504,11 @@ def loadSequenceFromMeshFiles(_obj, _dir, _file):
         tmpMesh.inMeshSequence = True
 
         # invert normals if flipnormals is true
-        if mss.invertNormals:
+        if mss.flipNormals:
             print('flipping...')
-            for faces in tmpMesh.data.polygons:
+            for faces in tmpMesh.polygons:
                 faces.flip()
-            tmpMesh.data.update()
+            tmpMesh.update()
             print('flipping completed')
 
         deselectAll()
@@ -758,7 +763,7 @@ def importStreamedFile(obj, idx):
     tmpMesh = tmpObject.data
 
     # invert normals if flipnormals is true
-    if mss.invertNormals:
+    if mss.flipNormals:
         print('flipping...')
         for faces in tmpMesh.polygons:
             faces.flip()
