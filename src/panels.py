@@ -147,6 +147,11 @@ class SequenceImportSettings(bpy.types.PropertyGroup):
         name="Relative Paths",
         description="Store relative paths for Streaming sequences and for reloading Cached sequences",
         default=True)
+    flipNormals: BoolProperty(
+        name="Flip Normals",
+        description="Flips normals of imported mesh",
+        default=False,
+    )
 
 
 @orientation_helper(axis_forward='-Z', axis_up='Y')
@@ -190,6 +195,7 @@ class ImportSequence(bpy.types.Operator, ImportHelper):
         mss.cacheMode = self.sequenceSettings.cacheMode
         mss.fileFormat = self.sequenceSettings.fileFormat
         mss.dirPathIsRelative = self.sequenceSettings.dirPathIsRelative
+        mss.flipNormals = self.sequenceSettings.flipNormals
 
         # this needs to be set to True if dirPath is supposed to be relative
         # once the path is made relative, it will be set to False
