@@ -497,6 +497,15 @@ def loadSequenceFromMeshFiles(_obj, _dir, _file):
         tmpMesh = tmpObject.data
         tmpMesh.use_fake_user = True
         tmpMesh.inMeshSequence = True
+
+        # invert normals if flipnormals is true
+        if mss.invertNormals:
+            print('flipping...')
+            for faces in tmpMesh.data.polygons:
+                faces.flip()
+            tmpMesh.data.update()
+            print('flipping completed')
+
         deselectAll()
         tmpObject.select_set(state=True)
         bpy.ops.object.delete()
@@ -747,6 +756,16 @@ def importStreamedFile(obj, idx):
     mss.fileImporter.load(mss.fileFormat, filename)
     tmpObject = getSelectedObjects()[0]
     tmpMesh = tmpObject.data
+
+    # invert normals if flipnormals is true
+    if mss.invertNormals:
+        print('flipping...')
+        for faces in tmpMesh.polygons:
+            faces.flip()
+        tmpMesh.update()
+        print('flipping completed')
+
+
 
     # we want to make sure the cached meshes are saved to the .blend file
     tmpMesh.use_fake_user = True
